@@ -51,7 +51,7 @@ public class DatasetRestController extends RestControllerBase {
     public ResponseEntity<HttpResponse<?>> createDataSet(
             @RequestBody Dataset dataset
             ) {
-        System.out.println(dataset);
+        
         datasetService.createDataset(dataset);
         return okResponse(dataset);
     }
