@@ -35,16 +35,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {// 모든 서블릿�
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String username = null;
-        String jwtToken = getJwtFromRequest(request);
 
-        if(jwtToken != null) {
+
+        final String requestTokenHeader = request.getHeader(Constants.API_ACCESS_TOKEN_ATTRIBUTE_NAME);
+        String username = null;
+        String jwtToken = null;
+
+        if(requestTokenHeader != null && requestTokenHeader.startsWith(Constants.API_ACCESS_TOKEN_PREFIX)) {
+            jwtToken = requestTokenHeader.substring(6);
             try{
                 username = jwtTokenUtil.getUserNameFromToken(jwtToken);
             }catch (IllegalArgumentException e) {
                 log.error("{}", "Unable to get JWT Token");
             }catch (ExpiredJwtException e) {
                 log.error("{}", "JWT Token has expired");
+            }catch (Exception ex) {
+                throw new RuntimeException("11 Username from token error");
             }
         }else{
             logger.warn("JWT Token does not begin with Bearer String");
