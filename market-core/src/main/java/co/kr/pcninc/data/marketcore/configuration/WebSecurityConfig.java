@@ -64,9 +64,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers(RestControllerBase.API_URL_PREFIX + "/auth/login/**").permitAll()
                 //.anyRequest().authenticated()
                 .and()
+                //.logout().logoutUrl(RestControllerBase.API_URL_PREFIX + "/auth/logout")
+                //.and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .formLogin().disable().headers().frameOptions().disable();
 
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
