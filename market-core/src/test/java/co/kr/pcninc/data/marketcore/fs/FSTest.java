@@ -1,16 +1,25 @@
 package co.kr.pcninc.data.marketcore.fs;
 
+import co.kr.pcninc.data.marketcore.api.AuthRestController;
+import co.kr.pcninc.data.marketcore.common.CurrentUser;
+import co.kr.pcninc.data.marketcore.domain.User;
+import co.kr.pcninc.data.marketcore.util.StringUtils;
+import co.kr.pcninc.data.marketcore.util.UUIDConverter;
+import groovy.util.logging.Slf4j;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IOUtils;
 import org.junit.Test;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
+@Slf4j
 public class FSTest {
 
     @Test
@@ -36,5 +45,19 @@ public class FSTest {
         fs.close();
 
     }
+
+
+    @Test
+    public void UuidUtilTest() {
+        UUID uuid = UUID.randomUUID();
+        String unqTimePath = UUIDConverter.toUnsignedString(uuid.getMostSignificantBits(), 6)
+                + UUIDConverter.toUnsignedString(uuid.getLeastSignificantBits(), 6);
+
+        String[] paths = {AuthRestController.userId, unqTimePath, ""};
+
+        System.out.println(StringUtils.join(paths, "/"));
+
+    }
+
 }
 
