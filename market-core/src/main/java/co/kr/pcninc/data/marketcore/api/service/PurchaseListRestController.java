@@ -4,12 +4,14 @@ import co.kr.pcninc.data.marketcore.api.RestControllerBase;
 import co.kr.pcninc.data.marketcore.common.message.HttpResponse;
 import co.kr.pcninc.data.marketcore.domain.PurchaseList;
 import co.kr.pcninc.data.marketcore.service.PurchaseListService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping(value = PurchaseListRestController.URL_PREFIX)
 public class PurchaseListRestController extends RestControllerBase {
@@ -57,6 +59,11 @@ public class PurchaseListRestController extends RestControllerBase {
         return okResponse(purchaseListService.getListPageableN(userId, page));
     }
 
+    /**
+     * 구매 목록 추가
+     * @param purchaseList
+     * @return
+     */
     @RequestMapping(
             value = CREDIT,
             method = RequestMethod.POST,
@@ -65,9 +72,15 @@ public class PurchaseListRestController extends RestControllerBase {
     public ResponseEntity<HttpResponse<?>> createPurchase(
             @RequestBody PurchaseList purchaseList
     ) {
+        log.info("요청 데이터 : {}", purchaseList);
         purchaseListService.createPurchase(purchaseList);
 
         return okResponse(purchaseList);
     }
+
+    /**
+     * 구매 목록 삭제
+     *
+     */
 
 }
