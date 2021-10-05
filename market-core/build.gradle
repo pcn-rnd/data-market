@@ -1,0 +1,72 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.4.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'org.asciidoctor.convert' version '1.5.9.2'
+	id 'java'
+	id 'war'
+}
+
+group = 'co.kr.pcninc.data'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.0'
+
+	implementation group: 'org.apache.hadoop', name: 'hadoop-common', version: '3.2.2'
+	implementation group: 'org.apache.hadoop', name: 'hadoop-hdfs', version: '3.2.2'
+	implementation group: 'org.apache.hadoop', name: 'hadoop-hdfs-client', version: '3.2.2'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+	asciidoctor group: 'org.springframework.restdocs', name: 'spring-restdocs-asciidoctor', version: '2.0.1.RELEASE'
+	testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '3.0.2'
+}
+
+configurations {
+	compile.exclude group: "org.slf4j", module: "slf4j-log4j12"
+}
+
+
+
+/*
+ext {
+	set('snippetsDir', file("build/generated-snippets"))
+}
+*/
+
+test {
+	useJUnitPlatform()
+//	outputs.dir snippetsDir
+}
+
+/*
+bootJar {
+	dependsOn asciidoctor
+	from("${asciidoctor.outputDir}/html5") {
+		into '/static/docs'
+	}
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	dependsOn test
+}
+
+*/
