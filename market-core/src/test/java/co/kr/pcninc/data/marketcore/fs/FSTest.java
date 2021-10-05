@@ -1,7 +1,6 @@
 package co.kr.pcninc.data.marketcore.fs;
 
 import co.kr.pcninc.data.marketcore.api.AuthRestController;
-import co.kr.pcninc.data.marketcore.common.CurrentUser;
 import co.kr.pcninc.data.marketcore.domain.User;
 import co.kr.pcninc.data.marketcore.util.StringUtils;
 import co.kr.pcninc.data.marketcore.util.UUIDConverter;
@@ -53,7 +52,7 @@ public class FSTest {
         String unqTimePath = UUIDConverter.toUnsignedString(uuid.getMostSignificantBits(), 6)
                 + UUIDConverter.toUnsignedString(uuid.getLeastSignificantBits(), 6);
 
-        String[] paths = {AuthRestController.userId, unqTimePath, ""};
+        String[] paths = {"", unqTimePath, ""};
 
         System.out.println(StringUtils.join(paths, "/"));
 
