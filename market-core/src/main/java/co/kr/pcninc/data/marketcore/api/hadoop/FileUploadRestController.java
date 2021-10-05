@@ -3,7 +3,10 @@ package co.kr.pcninc.data.marketcore.api.hadoop;
 import co.kr.pcninc.data.marketcore.api.RestControllerBase;
 import co.kr.pcninc.data.marketcore.api.search.DatasetRestController;
 import co.kr.pcninc.data.marketcore.common.message.HttpResponse;
+import co.kr.pcninc.data.marketcore.domain.response.FileResponse;
 import co.kr.pcninc.data.marketcore.service.FileService;
+import co.kr.pcninc.data.marketcore.util.ObjectConverter;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -18,10 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Slf4j
@@ -29,7 +28,6 @@ import java.util.List;
 @RequestMapping(value = FileUploadRestController.URL_PREFIX)
 public class FileUploadRestController extends RestControllerBase {
     static final String URL_PREFIX = API_URL_PREFIX + "/file";
-
 
     @Autowired
     FileService fileService;
@@ -39,10 +37,10 @@ public class FileUploadRestController extends RestControllerBase {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public ResponseEntity<HttpResponse<String>> requestUploadFile(@RequestParam("files") List<MultipartFile> fileList) {
-        fileService.uploadHadoop(fileList);
+    public ResponseEntity<HttpResponse<?>> requestUploadFile(@RequestParam("files") List<MultipartFile> fileList) {
+        FileResponse response = fileService.uploadHadoop(fileList);
 
-        return okResponse(fileList.size() + "개의 파일 업로드 완료.");
+        return okResponse(response);
     }
 
 
