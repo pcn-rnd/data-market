@@ -180,19 +180,6 @@
           <div class="text-sm-right">
             <div class="float-left">
               <span class="font-size-20 font-weight-bold">결과(<span>{{datasetInfo.totalElements}}</span>)</span>
-                <!--<select class="custom-select"  style="border: none; width: 150%">
-                  <option selected> 최신순 </option>
-                  <option selected> 조회수 순 </option>
-                </select>-->
-                <!--<div>
-                  <select class="custom-select"  style="border: none; width: 150%">
-                    <option selected> 최신순 </option>
-                    <option selected> 조회수 순 </option>
-                  </select>
-                </div>-->
-
-
-
                 <b-dropdown variant="link">
                   <template slot="button-content">
                     정확도 순

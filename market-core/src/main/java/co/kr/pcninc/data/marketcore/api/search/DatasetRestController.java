@@ -49,7 +49,7 @@ public class DatasetRestController extends RestControllerBase {
     /**
      * 카테고리 검색
      */
-    @RequestMapping(
+    /*@RequestMapping(
             value = CAT_ID,
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -61,7 +61,7 @@ public class DatasetRestController extends RestControllerBase {
         log.info("검색어 : {}", q);
 
         return okResponse(datasetService.getDatasetListByCat(page, q, catId));
-    }
+    }*/
 
 
     @RequestMapping(

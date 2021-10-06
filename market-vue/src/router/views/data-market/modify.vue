@@ -10,20 +10,20 @@
    */
   export default {
     page: {
-      title: "Create New Dataset",
+      title: "Modify Dataset",
       meta: [{name: "description", content: appConfig.description}]
     },
     components: {Layout, PageHeader},
     data() {
       return {
-        title: "Create New Dataset",
+        title: "Modify Dataset",
         items: [
           {
             text: "Dataset",
             href: "/"
           },
           {
-            text: "Create New Dataset",
+            text: "Modify Dataset",
             active: true
           }
         ],

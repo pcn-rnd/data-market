@@ -31,7 +31,6 @@
                 await axios('/ds/cat-cnt').then(
                     res => {
                         const values = res.data.body;
-
                         const lbs = [];
                         const dts = [];
 
@@ -42,7 +41,6 @@
 
                         this.collection.labels = lbs;
                         this.collection.datasets[0].data = dts;
-
                         this.collection.datasets[0].backgroundColor = this.colorGenerate(values.length)
                     }
                 );
@@ -51,9 +49,6 @@
             }
 
             this.renderChart(this.collection, this.options);
-        },
-        created() {
-
         },
         methods: {
             colorGenerate(len) {
