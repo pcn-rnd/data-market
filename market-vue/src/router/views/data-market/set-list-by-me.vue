@@ -89,11 +89,13 @@
                             <div class="px-4 py-3 border-top">
                                 <ul class="list-inline mb-0">
                                     <li class="list-inline-item mr-3 float-right">
-                                        <span
-                                                class="badge"
-                                                :class="{ 'badge-primary': `${item.ableYn}` === 'Y',
-                                          'badge-danger': `${item.ableYn}` === 'N' }"
-                                        >{{item.ableYn}}</span>
+                                        <span class="badge badge-primary" v-if="item.ableYn === 'Y'">
+                                            유효
+                                        </span>
+                                        <span class="badge badge-light" v-else-if="item.ableYn === 'N'">
+                                            만료
+                                        </span>
+                                        <span class="badge badge-danger" v-else=""></span>
                                     </li>
                                     <li v-b-tooltip.hover.top class="list-inline-item mr-3" title="Due Date">
                                         <i class="bx bx-calendar mr-1"></i>
