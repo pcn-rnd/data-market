@@ -66,5 +66,8 @@ public class Dataset {
     @Column(name = "price")
     private BigDecimal price;
 
+    @Column(name = "f_names")
+    private String fNames;
+
 }
 
