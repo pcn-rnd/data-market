@@ -57,7 +57,8 @@
             logFilePath : null,
             user : null,
             filePath : null,
-            datatype : null
+            datatype : [],
+            fNames:""
         },
         categories : {},
         wss : {},
@@ -85,7 +86,7 @@
         },
         async create() {
             this.pre();
-            console.log(this.dataset);
+            /*console.log(this.dataset);
 
             if(this.uldStatus === 'COMPLETED') {
                 try{
@@ -107,7 +108,7 @@
                 }
             }else {
                 alert("파일 업로드를 완료하십시오.")
-            }
+            }*/
         },
         addUrlInfo() {
             this.urlsInfo.push({datatype : "", description : ""})
@@ -118,6 +119,11 @@
             console.log(this.urlsInfo);
             this.dataset.urlsInfo = JSON.stringify(this.urlsInfo);
             this.dataset.crtDt = new Date();
+            for (let i = 0; i < this.urlsInfo.length; i++) {
+                this.dataset.datatype.push(this.urlsInfo[i]["datatype"]);
+            }
+
+            console.log(this.dataset.datatype);
         },
         deleteInfo() {
             this.urlsInfo.splice(0, 1);
@@ -127,7 +133,9 @@
             let formData = new FormData();
 
             console.log(this.$refs.picked_files.files);
-            for(let i = 0; i < this.$refs.picked_files.files.length; i++) {
+            this.getFileNames();
+
+            /*for(let i = 0; i < this.$refs.picked_files.files.length; i++) {
                 formData.append('files', this.fileList[i]);
             }
             axios.post('/file', formData
@@ -139,7 +147,7 @@
                 }else{
                     alert(response.statusText)
                 }
-            });
+            });*/
 
         },
         updateFList() {
@@ -153,6 +161,14 @@
             console.log(index);
             this.dataset.datatype[index] = event.target.value;
             console.log(this.dataset.datatype);
+        },
+        getFileNames() {
+
+            let fNames = [];
+            for (let i = 0; i < this.$refs.picked_files.files.length; i++){
+                fNames[i] = this.$refs.picked_files.files[i].name;
+            }
+            console.log(fNames);
         }
     }
   };
