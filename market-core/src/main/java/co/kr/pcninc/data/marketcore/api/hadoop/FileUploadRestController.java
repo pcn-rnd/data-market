@@ -43,6 +43,16 @@ public class FileUploadRestController extends RestControllerBase {
         return okResponse(response);
     }
 
+    /*@RequestMapping(
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<HttpResponse<?>> readFiles() {
+        FileResponse response = fileService
+
+        return okResponse(response);
+    }*/
+
 
 
 }
