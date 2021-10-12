@@ -35,7 +35,8 @@
         newest: {},
         defaultPgSize : 10,
         enabled: [],
-        q : ""
+        q : "",
+        sCatId: 0
       };
     },
     computed: {
@@ -70,8 +71,9 @@
       },
       getDsList(q) {
         /*console.log("q = " + this.q);*/
+
         if(q == null) q = '';
-        axios.get(`/ds?q=${q}&size=${this.defaultPgSize}&page=${this.datasetInfo.number-1}`,{
+        axios.get(`/ds${this.sCatId == 0 ? '' : '/cat/' + this.sCatId}?q=${q}&size=${this.defaultPgSize}&page=${this.datasetInfo.number-1}`,{
 
         }).then(response => {
           console.log(response.data.body);
@@ -83,7 +85,13 @@
       isLogin() {
         console.log(this.$store.state.isLogin);
         return this.$store.state.isLogin;
+      },
+      handleSelected(e) {
+        if(e.target.options.selectedIndex > -1) {
+          this.sCatId = e.target.options[e.target.options.selectedIndex].value;
+        }
       }
+
     }
   };
 </script>
@@ -138,26 +146,12 @@
                 <div class="form-group row mb-0">
                   <div class="col-md-10">
 
-                    <select class="custom-select"  style="border: none; width: 150%">
-                      <option selected> 카테고리 </option>
-                      <option value="1" v-for="(item, idx) in categories" :key="idx">{{item.catName}}</option>
+                    <select class="custom-select"  style="border: none; width: 150%" @change="handleSelected">
+                      <option value="0" selected> 카테고리 </option>
+                      <option :value="item.catId" v-for="(item, idx) in categories" :key="idx">{{item.catName}}</option>
                     </select>
                   </div>
                 </div>
-
-
-               <!-- <b-dropdown variant="link">
-                  <template slot="button-content">
-                    카테고리
-                    <i class="mdi mdi-chevron-down"></i>
-                  </template>
-
-
-
-                  <span v-for="(item, idx) in categories" :key="idx">
-                    <b-dropdown-item>{{item.catName}}</b-dropdown-item>
-                  </span>
-                </b-dropdown>-->
               </div>
             </div>
 
