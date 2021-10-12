@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = DatasetRestController.URL_PREFIX)
 public class DatasetRestController extends RestControllerBase {
     static final String URL_PREFIX = API_URL_PREFIX + "/ds";
+    static final String CAT = "/cat";
     static final String CAT_ID = "/{catId}";
     static final String SET_ID = "/{setId}";
     static final String POPULAR = "/populars/{rows}";
@@ -49,8 +50,8 @@ public class DatasetRestController extends RestControllerBase {
     /**
      * 카테고리 검색
      */
-    /*@RequestMapping(
-            value = CAT_ID,
+    @RequestMapping(
+            value = CAT + CAT_ID,
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -61,7 +62,7 @@ public class DatasetRestController extends RestControllerBase {
         log.info("검색어 : {}", q);
 
         return okResponse(datasetService.getDatasetListByCat(page, q, catId));
-    }*/
+    }
 
 
     @RequestMapping(
