@@ -53,6 +53,7 @@
                 axios.post('/pl/credit', this.purchaseObj)
                     .then(response => {
                         if(response.status === 200) {
+                            alert("구매가 완료되었습니다.");
                             this.$router.push({path : '/'});
                         }
                     });
