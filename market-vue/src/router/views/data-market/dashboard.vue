@@ -96,7 +96,7 @@
         })
       },
       toGo(){
-        location.href= 'http://localhost:8082?Authorization=' + this.token
+        location.href= process.env.VUE_APP_BC_SVC_HOST + '?Authorization=' + this.token
       },
       getLog() {
         axios.get('wss/log').then(response => {

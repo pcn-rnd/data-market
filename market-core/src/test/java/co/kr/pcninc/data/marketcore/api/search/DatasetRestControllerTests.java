@@ -26,7 +26,7 @@ import java.util.Date;
 
 public class DatasetRestControllerTests extends ControllerTestBase {
 
-    static final String URL_PREFIX = DatasetRestController.URL_PREFIX;
+ /*   static final String URL_PREFIX = DatasetRestController.URL_PREFIX;
     static final String SET_ID = DatasetRestController.SET_ID;
 
     int testSetId = 14; // Test용 고정 ID
@@ -48,7 +48,7 @@ public class DatasetRestControllerTests extends ControllerTestBase {
                                 .userId("pcn")
                                 .build())
                 .crtDt(new Date())
-                .publicYn("Y")prof2020
+                .publicYn("Y")
                 .datatype("csv")
                 .path("/data/")
                 .price(new BigDecimal(1500))
@@ -66,7 +66,7 @@ public class DatasetRestControllerTests extends ControllerTestBase {
                                 .content(ObjectConverter.toJson(dataset))
                 )
                 .andDo(print())
-                /*.andDo(document.document(
+                *//*.andDo(document.document(
                         requestFields(
                                 fieldWithPath("setId").type(JsonFieldType.NUMBER).description("데이터셋 ID"),
                                 fieldWithPath("catId.catId").type(JsonFieldType.NUMBER).description("카테고리 ID"),
@@ -87,7 +87,7 @@ public class DatasetRestControllerTests extends ControllerTestBase {
                                 fieldWithPath("path").type(JsonFieldType.STRING).description("데이터 저장 경로"),
                                 fieldWithPath("price").type(JsonFieldType.NUMBER).description("데이터셋 가격")
                         )
-                ))*/
+                ))*//*
                 .andExpect(status().isOk());
     }
 
@@ -269,5 +269,5 @@ public class DatasetRestControllerTests extends ControllerTestBase {
                         )
                 ))
                 .andExpect(status().isOk());
-    }
+    }*/
 }

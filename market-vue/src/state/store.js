@@ -24,6 +24,9 @@ const store = new Vuex.Store({
         },
         ['SETCURUSER'](state, payload) {
             state.curUser = payload;
+        },
+        ['SECRET'](state, payload) {
+            state.secret = payload;
         }
     },
     plugins: [vuexPersistence.plugin],

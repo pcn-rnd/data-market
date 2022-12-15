@@ -21,4 +21,13 @@ public class PurchaseListService {
 
     public void createPurchase(PurchaseList purchaseList) { purchaseListRepository.save(purchaseList); }
 
+    public void deletePurchase(int listId) { purchaseListRepository.deleteById(listId); }
+
+
+    //
+    public int unableDataset() { return purchaseListRepository.unableDataset(); }
+
+    public int unableDatasetByUser(String userId) { return purchaseListRepository.unableDatasetByUser(userId); }
+
+    public List<PurchaseList> getAll() {return purchaseListRepository.findAll();}
 }

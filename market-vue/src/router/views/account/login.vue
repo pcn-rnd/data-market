@@ -43,9 +43,11 @@
                         if (response.data.result === 'success') {
                             this.isAuthError = false;
 
+
                             this.$store.commit('SETTOKEN', response.data.body.token);
                             this.$store.commit('SETLOGINSTATE', true);
                             this.$store.commit('SETCURUSER', response.data.body.userId);
+                            this.$store.commit('SECRET', this.secret);
 
                             this.$router.push(
                                 this.$route.query.redirectFrom || {name: "index"}

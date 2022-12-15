@@ -3,7 +3,8 @@ package co.kr.pcninc.data.marketcore.api.hadoop;
 import co.kr.pcninc.data.marketcore.api.RestControllerBase;
 import co.kr.pcninc.data.marketcore.api.search.DatasetRestController;
 import co.kr.pcninc.data.marketcore.common.message.HttpResponse;
-import co.kr.pcninc.data.marketcore.domain.response.FileResponse;
+import co.kr.pcninc.data.marketcore.domain.Dataset;
+import co.kr.pcninc.data.marketcore.domain.response.File;
 import co.kr.pcninc.data.marketcore.service.FileService;
 import co.kr.pcninc.data.marketcore.util.ObjectConverter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 
 @Slf4j
@@ -28,6 +32,7 @@ import java.util.List;
 @RequestMapping(value = FileUploadRestController.URL_PREFIX)
 public class FileUploadRestController extends RestControllerBase {
     static final String URL_PREFIX = API_URL_PREFIX + "/file";
+    static final String F_LIST = "/f-list";
 
     @Autowired
     FileService fileService;
@@ -38,20 +43,23 @@ public class FileUploadRestController extends RestControllerBase {
     )
     @ResponseBody
     public ResponseEntity<HttpResponse<?>> requestUploadFile(@RequestParam("files") List<MultipartFile> fileList) {
-        FileResponse response = fileService.uploadHadoop(fileList);
+        File response = fileService.uploadHadoop(fileList);
 
         return okResponse(response);
     }
 
-    /*@RequestMapping(
-            method = RequestMethod.GET,
+    @RequestMapping(
+            value = F_LIST,
+            method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<HttpResponse<?>> readFiles() {
-        FileResponse response = fileService
+    public ResponseEntity<HttpResponse<?>> getFileList(@RequestBody String path) throws UnsupportedEncodingException {
+        String nPath = URLDecoder.decode(path, "UTF-8");
 
-        return okResponse(response);
-    }*/
+        List<String> fList = fileService.getFList(nPath.substring(0, nPath.length()-1));
+
+        return okResponse(fList);
+    }
 
 
 

@@ -212,8 +212,8 @@
                       <span class="font-weight-bold" style="color: #495057;">{{data.title}}</span>
                     </router-link>
                   </td>
-                  <td v-for="(type, i) in data.datatype.split(',')" :key="i">
-                    <b-badge pill variant="primary">{{type}}</b-badge>
+                  <td>
+                    <b-badge  pill variant="primary" class="mr-1" v-for="(type, i) in data.datatype.split(',')" :key="i">{{type}}</b-badge>
                     <!--<b-badge pill variant="success" class="ml-1">CSV</b-badge>-->
                   </td>
                   <td>{{$moment(data.crtDt).format('YYYY-MM-DD')}}</td>

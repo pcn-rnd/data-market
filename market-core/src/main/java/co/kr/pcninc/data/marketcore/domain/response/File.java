@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class FileResponse {
+public class File {
     private String savePath;
 }

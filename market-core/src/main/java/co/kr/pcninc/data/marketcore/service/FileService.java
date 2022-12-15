@@ -1,12 +1,13 @@
 package co.kr.pcninc.data.marketcore.service;
 
 import co.kr.pcninc.data.marketcore.api.AuthRestController;
-import co.kr.pcninc.data.marketcore.domain.response.FileResponse;
+import co.kr.pcninc.data.marketcore.domain.response.File;
 import co.kr.pcninc.data.marketcore.util.ObjectConverter;
 import co.kr.pcninc.data.marketcore.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.omg.CORBA.Current;
@@ -23,8 +24,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -35,9 +39,8 @@ public class FileService {
 
     private final String ROOT_PATH = "/data-market/data/";
 
-    public FileResponse uploadHadoop(List<MultipartFile> fileList) {
+    public File uploadHadoop(List<MultipartFile> fileList) {
         String prePath = null;
-
 
         try{
             FileSystem newFS = connectFs();
@@ -55,9 +58,40 @@ public class FileService {
 
             e.printStackTrace();
         }
-
-        return new FileResponse(prePath);
+        return new File(prePath);
     }
+
+    public List<String> getFList(String path) {
+        List<String> list = new ArrayList<>();
+        //String[] list = null;
+        try{
+            log.info(fsUrl + path);
+            FileSystem fs = connectFs();
+            FileStatus[] fileStatus = fs.listStatus(new Path(fsUrl + path));
+
+            /*Arrays.stream(fileStatus)
+                    .map(s -> s.getPath().toString().split("/"));*/
+
+
+            for (FileStatus file : fileStatus) {
+                String[] getName = file.getPath().toString().split("/");
+                list.add(getName[getName.length - 1]);
+            }
+        }catch (IOException e){
+            log.error("{}", "업로드 된 파일을 불러오는데 실패하였습니다.");
+        }
+
+        return list;
+    }
+
+    public void deleteFile() {
+        /*try{
+
+        }catch (IOException e) {
+
+        }*/
+    }
+
 
     public String pathGenerate() {
         Object authentication = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

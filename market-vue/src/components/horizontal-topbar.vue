@@ -14,7 +14,6 @@ export default {
     };
   },
   created() {
-    this.bcSvcHost = process.env.VUE_APP_BC_SVC_HOST;
     this.isLogin();
   },
   methods: {
@@ -22,6 +21,7 @@ export default {
       this.token = this.$store.state.token;
       this.login = this.$store.state.isLogin;
       this.user = this.$store.state.curUser;
+      this.bcSvcHost = process.env.VUE_APP_BC_SVC_HOST;
     },
     toggleRightSidebar() {
       this.$parent.toggleRightSidebar();
@@ -83,6 +83,32 @@ export default {
           this.authError = response.data.body;
         }
       })
+    },
+    goToBc() {
+      if(this.token === "") {
+        window.open(process.env.VUE_APP_BC_SVC_HOST);
+
+        //location.href = process.env.VUE_APP_BC_SVC_HOST
+      }else {
+
+        window.open(process.env.VUE_APP_BC_SVC_HOST + '/login?Authorization=' + this.token + "&id=" + this.user);
+
+        //location.href = process.env.VUE_APP_BC_SVC_HOST + '/login?Authorization=' + this.token + "&id=" + this.user;
+
+        // console.log(this.token);
+        //
+        // this.$http({
+        //   method: 'post',
+        //   url: process.env.VUE_APP_BC_API_HOST + '/api/auth/login',
+        //   data : {
+        //     id: this.user,
+        //     secret: this.$store.state.secret
+        //   }
+        // }).then(response => {
+        //   authToken = response.data.token;
+        //
+        // })
+      }
     }
   }
 };
@@ -111,7 +137,7 @@ export default {
               <img src="@/assets/images/logo-light.png" alt height="19" />
             </span>-->
             <span class="logo-lg font-size-20 font-weight-bold text-white">
-              OASIS-X PLATFORM
+              Data Market Service
             </span>
           </router-link>
         </div>
@@ -401,11 +427,19 @@ export default {
 
 
 
-        <div clsas="dropdown d-none d-lg-inline-block ml-1" v-if="isLogin">
+        <!--<div clsas="dropdown d-none d-lg-inline-block ml-1">
           <button type="button" class="btn header-item noti-icon">
             <a :href='bcSvcHost'><i class="bx bx-link-external"></i></a>
           </button>
         </div>
+-->
+
+        <div clsas="dropdown d-none d-lg-inline-block ml-1" v-if="isLogin" >
+          <button type="button" class="btn header-item noti-icon" @click="goToBc()">
+            <i class="bx bx-link-external"></i>
+          </button>
+        </div>
+
 
         <b-dropdown
           toggle-class="header-item noti-icon"

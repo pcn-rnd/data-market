@@ -34,7 +34,7 @@
             wsId : 0,
             title : "",
             content : "",
-            datatype : "",
+            datatype : [],
             path : "",
             crtDt : null,
             urlsInfo : null,
@@ -42,7 +42,9 @@
             views : 0,
             seller : {
                 userId : "pcn"
-            } /// 현재 사용자 수정 必
+            }, /// 현재 사용자 수정 必
+            price : 3000,
+            fNames:""
         },
         workspace : {
             wsId : 0,
@@ -52,28 +54,41 @@
             lastWorkComt : null,
             wsCrtDt : null,
             wsModDt : null,
-            percent : null,
+            percent : 25,
             userLockYn : "\u0000",
             logFilePath : null,
             user : null,
+            filePath : null
+        },
+        work : {
+            worksMultiId : {
+                "workId":0,
+                "wsId":120
+            },
+            lockActiveUser : null,
             filePath : null,
-            datatype : [],
-            fNames:""
+            thput : null,
+            worker : "pcn",
+            workerCmt : "",
+            crtDt : null,
+            modDt : "2021-28-28 15:28:43",
+            finishYn : "Y"
         },
         categories : {},
         wss : {},
         urlsInfo :[],
-        types : ['PDF', 'CSV', 'TEXT'],
+        types : ['PDF', 'CSV', 'TEXT', "JSON"],
         bcApiHost : "",
         fileList : [],
         uldStatus : 'STANDBY',
-        wsCurSqe : null
+        wsCurSqe : null,
+        purchaseObj : {}
       };
     },
     created() {
         //변수 명 앞에 항상 VUE_APP_ 를 붙여주면 Vue CLI에서 내부적으로 웹팩 DefinePlugin을 활용하여 클라이언트 웹 자원에서 접근할 수 있게 설정
         this.bcApiHost =  process.env.VUE_APP_BC_API_HOST;
-        console.log(this.bcApiHost);
+        //console.log(this.bcApiHost);
         this.getCats();
         //this.getWss();
     },
@@ -86,20 +101,40 @@
         },
         async create() {
             this.pre();
-            /*console.log(this.dataset);
+            console.log(this.dataset);
 
             if(this.uldStatus === 'COMPLETED') {
                 try{
                     this.workspace.wsName = this.dataset.title;
                     await axios.post (this.bcApiHost + '/api/wss', this.workspace)
                         .then(response => {
-                            if(response.status === 200)
+                            if(response.status === 200) {
                                 this.dataset.wsId = response.data.body;
+                                this.work.worksMultiId.wsId = response.data.body;
+                                axios.post (this.bcApiHost + '/api/wss/works', this.work)
+                                    .then(response => {
+                                            console.log(response);
+                                    });
+                            }
+
                         });
+
+
+
+
 
                     await axios.post('/ds', this.dataset)
                         .then(response => {
                             if(response.status === 200) {
+                                /*if (this.dataset.publicYn == 'N') {
+                                  this.setPurchaseObj();
+                                  axios.post('/pl/credit', this.purchaseObj)
+                                      .then(response => {
+                                        if(response.status === 200) {
+                                          console.log(" 구매 완");
+                                        }
+                                      });
+                                }*/
                                 this.$router.push({path : '/'})
                             }
                         });
@@ -108,22 +143,40 @@
                 }
             }else {
                 alert("파일 업로드를 완료하십시오.")
-            }*/
+            }
+        },
+        setPurchaseObj() {
+          this.purchaseObj = {
+            "listId" : 0,
+            "ableYn" : "Y",
+            "purDt" : new Date(),
+            "setId" : {
+              "setId" : this.dataset.setId
+            },
+            "customer" : {
+              "userId" : "pcn" // 현재 사용자로 수정
+            }
+          }
         },
         addUrlInfo() {
             this.urlsInfo.push({datatype : "", description : ""})
         },
         pre() {
-            if(this.dataset.publicYn === false) this.dataset.publicYn = 'N';
-            else this.dataset.publicYn = 'Y';
-            console.log(this.urlsInfo);
-            this.dataset.urlsInfo = JSON.stringify(this.urlsInfo);
-            this.dataset.crtDt = new Date();
-            for (let i = 0; i < this.urlsInfo.length; i++) {
-                this.dataset.datatype.push(this.urlsInfo[i]["datatype"]);
+            if(this.dataset.publicYn === false) {
+              this.dataset.publicYn = 'N';
+            }
+            else {
+              this.dataset.publicYn = 'Y';
             }
 
-            console.log(this.dataset.datatype);
+            //console.log(this.urlsInfo);
+            this.dataset.urlsInfo = JSON.stringify(this.urlsInfo);
+            this.dataset.crtDt = new Date();
+
+            console.log(this.dataset.datatype.toString());
+
+            this.dataset.datatype = this.dataset.datatype.toString();
+                //(Array.from(new Set(this.dataset.datatype)));//.join(",");
         },
         deleteInfo() {
             this.urlsInfo.splice(0, 1);
@@ -135,7 +188,7 @@
             console.log(this.$refs.picked_files.files);
             this.getFileNames();
 
-            /*for(let i = 0; i < this.$refs.picked_files.files.length; i++) {
+            for(let i = 0; i < this.$refs.picked_files.files.length; i++) {
                 formData.append('files', this.fileList[i]);
             }
             axios.post('/file', formData
@@ -147,8 +200,7 @@
                 }else{
                     alert(response.statusText)
                 }
-            });*/
-
+            });
         },
         updateFList() {
             this.fileList = Array.from(this.$refs.picked_files.files);
@@ -158,17 +210,16 @@
             this.fileList.splice(idx, 1);
         },
         selectType(index, event) {
-            console.log(index);
             this.dataset.datatype[index] = event.target.value;
             console.log(this.dataset.datatype);
         },
         getFileNames() {
-
             let fNames = [];
             for (let i = 0; i < this.$refs.picked_files.files.length; i++){
                 fNames[i] = this.$refs.picked_files.files[i].name;
             }
-            console.log(fNames);
+
+            this.dataset.fNames = fNames.join(',');
         }
     }
   };

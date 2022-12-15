@@ -21,7 +21,7 @@ public class PurchaseList {
     @GeneratedValue
     private int listId;
 
-    @ManyToOne
+    @ManyToOne//(cascade = CascadeType.ALL)
     @JoinColumn(name = "set_id")
     private Dataset setId;
 

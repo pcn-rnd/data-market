@@ -31,11 +31,16 @@
                     }
                 ],
                 dataset : {},
-                purchaseObj : {}
+                purchaseObj : {},
+                curUser : ""
             };
         },
         created() {
-            this.getDetails();
+          if (this.$store.state.curUser) {
+            this.curUser = this.$store.state.curUser;
+          }
+
+          this.getDetails();
         },
         methods: {
             getDetails() {
@@ -67,7 +72,8 @@
                         "setId" : this.dataset.setId
                     },
                     "customer" : {
-                        "userId" : "pcn" // 현재 사용자로 수정
+                        "userId" : this.curUser
+                            //"pcn" // 현재 사용자로 수정
                     }
                 }
             }
@@ -162,7 +168,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <router-link :to="{ name: 'Purchase Dataset', query: { setId: dataset.setId }}" role="menuitem">
+                            <router-link v-show="curUser != ''" :to="{ name: 'Purchase Dataset', query: { setId: dataset.setId }}" role="menuitem">
                                 <b-button pill class="btn btn-success w-100" @click="purchase">결제하기</b-button>
                             </router-link>
                         </div>

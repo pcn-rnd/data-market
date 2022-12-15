@@ -24,6 +24,7 @@ import java.util.Date;
 
 //완
 public class PurchaseListRestControllerTests extends ControllerTestBase {
+/*
 
     static final String URL_PREFIX = PurchaseListRestController.URL_PREFIX;
     static final String USER_ID = PurchaseListRestController.USER_ID;
@@ -190,6 +191,7 @@ public class PurchaseListRestControllerTests extends ControllerTestBase {
                 ))
                 .andExpect(status().isOk());
     }
+*/
 
 
 }

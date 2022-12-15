@@ -85,7 +85,7 @@ export default [{
   },
   {
     path: '/ds/modify',
-    name: 'Workspace Modify',
+    name: 'Dataset Modify',
     meta: {authRequired: true},
     component: () =>
         import ('./views/data-market/modify')

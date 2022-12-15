@@ -18,4 +18,13 @@ public interface PurchaseListRepository  extends JpaRepository<PurchaseList, Int
     @Query(value = "SELECT * FROM DM_PURCHASE_LIST WHERE " +
             "set_id IN (SELECT dm_dataset_infos.set_id FROM dm_dataset_infos WHERE SELLER=?1 AND PUBLIC_YN='N')", nativeQuery = true)
     Page<PurchaseList> findByUserN(String user, Pageable pageable);
+
+
+    @Query(value = "SELECT COUNT(*) FROM DM_PURCHASE_LIST WHERE able_yn = 'N'", nativeQuery = true)
+    int unableDataset();
+
+    @Query(value = "SELECT COUNT(*) FROM DM_PURCHASE_LIST WHERE able_yn = 'N' AND CUSTOMER = ?1", nativeQuery = true)
+    int unableDatasetByUser(String userId);
+
+
 }

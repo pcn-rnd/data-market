@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Slf4j
 @RestController
 @RequestMapping(value = DatasetRestController.URL_PREFIX)
@@ -28,6 +30,14 @@ public class DatasetRestController extends RestControllerBase {
     static final String ALL_Y_COUNT = "/ycnt";
 
 
+    static final String AUTH = "/auth";
+    static final String ALL = "/all";
+    static final String TITLES = "/titles";
+    static final String CONTENTS = "/contents";
+    static final String VIEWS = "/views";
+    static final String TYPES = "/types";
+    static final String PATHS = "/path";
+    static final String PRICES = "/prices";
     /**
      * 통합 검색
      */
@@ -70,8 +80,12 @@ public class DatasetRestController extends RestControllerBase {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<HttpResponse<?>> getDataSet(@PathVariable int setId) {
+    public ResponseEntity<HttpResponse<?>> getDataSet(
+            @PathVariable int setId,
+            @RequestParam("m") Optional<Boolean> m) {
         Dataset ds = datasetService.getDataSet(setId);
+
+
 
         ds.setViews(ds.getViews() + 1);
         datasetService.save(ds);
@@ -84,14 +98,16 @@ public class DatasetRestController extends RestControllerBase {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<HttpResponse<?>> createDataSet(
+    public ResponseEntity<HttpResponse<String>> createDataSet(
             @RequestBody Dataset dataset
             ) {
         
         log.info("요청 데이터 : {}", dataset);
         datasetService.save(dataset);
 
-        return okResponse(dataset);
+        // 공인인증용
+        // return okResponse(dataset);
+        return okResponse(dataset.getSetId() + "번 데이터셋 생성 완료");
     }
 
     @RequestMapping(
@@ -197,6 +213,78 @@ public class DatasetRestController extends RestControllerBase {
     public ResponseEntity<HttpResponse<?>> getYCount() {
         return okResponse(datasetService.getYCnt("Y"));
     }
+
+
+    @RequestMapping(
+            value = ALL,
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<HttpResponse<?>> getAll() {
+
+        return okResponse(datasetService.getAll());
+    }
+
+    @RequestMapping(
+            value = TITLES,
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<HttpResponse<?>> getTitles() {
+
+        return okResponse(datasetService.getAllTitle());
+    }
+
+    @RequestMapping(
+            value = CONTENTS,
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<HttpResponse<?>> getAllContents() {
+
+        return okResponse(datasetService.getAllContent());
+    }
+
+    @RequestMapping(
+            value = VIEWS,
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<HttpResponse<?>> getAllViews() {
+
+        return okResponse(datasetService.getAllViews());
+    }
+
+    @RequestMapping(
+            value = TYPES,
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<HttpResponse<?>> getAllTypes() {
+
+        return okResponse(datasetService.getAllDataType());
+    }
+
+    @RequestMapping(
+            value = PATHS,
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<HttpResponse<?>> getAllPaths() {
+
+        return okResponse(datasetService.getPathList());
+    }
+
+    @RequestMapping(
+            value = PRICES,
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<HttpResponse<?>> getAllPrices() {
+
+        return okResponse(datasetService.getAllPrice());
+    }
+
 
 
 }

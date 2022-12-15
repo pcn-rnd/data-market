@@ -29,7 +29,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 public class ControllerTestBase{
-
+/*
     @Autowired
     protected MockMvc mockMvc;
     protected RestDocumentationResultHandler document;
@@ -51,5 +51,5 @@ public class ControllerTestBase{
                 .apply(documentationConfiguration(restDocumentation).snippets().withEncoding(Constants.DEFAULT_CHARSET_VALUE))
                 .alwaysDo(document)
                 .build();
-    }
+    }*/
 }

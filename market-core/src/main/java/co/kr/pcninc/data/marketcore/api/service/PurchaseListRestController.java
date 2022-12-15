@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class PurchaseListRestController extends RestControllerBase {
     static final String URL_PREFIX = API_URL_PREFIX + "/pl";
     static final String USER_ID = "/{userId}";
+    static final String LIST_ID = "/{listId}";
     static final String CREDIT = "/credit";
     static final String MY = "/my";
+
+    static final String UNABLE = "/unable";
 
     @Autowired
     PurchaseListService purchaseListService;
@@ -69,18 +72,67 @@ public class PurchaseListRestController extends RestControllerBase {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<HttpResponse<?>> createPurchase(
+    public ResponseEntity<HttpResponse<String>> createPurchase(
             @RequestBody PurchaseList purchaseList
     ) {
         log.info("요청 데이터 : {}", purchaseList);
         purchaseListService.createPurchase(purchaseList);
 
-        return okResponse(purchaseList);
+        //return okResponse(purchaseList);
+        //공인인증용
+        return okResponse(purchaseList.getSetId().getSetId() + "구매완료");
     }
 
     /**
      * 구매 목록 삭제
      *
      */
+    @RequestMapping(
+            value = "/del" + LIST_ID,
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<HttpResponse<String>> deletePurchaseLog(
+            @PathVariable int listId
+    ) {
+        purchaseListService.deletePurchase(listId);
+
+        //return okResponse(purchaseList);
+        //공인인증용
+        return okResponse(listId + "번 삭제 완료");
+    }
+
+
+    @RequestMapping(
+            value = UNABLE,
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<HttpResponse<?>> getUnablePurchase(
+
+    ) {
+        return okResponse(purchaseListService.unableDataset());
+    }
+
+    @RequestMapping(
+            value = UNABLE + USER_ID,
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<HttpResponse<?>> getUnablePurchaseByUser(
+            @PathVariable String userId
+
+    ) {
+        return okResponse(purchaseListService.unableDatasetByUser(userId));
+    }
+
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<HttpResponse<?>> getAllList(){
+        return okResponse(purchaseListService.getAll());
+    }
 
 }

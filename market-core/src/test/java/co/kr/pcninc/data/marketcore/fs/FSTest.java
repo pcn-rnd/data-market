@@ -16,11 +16,13 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 @Slf4j
 public class FSTest {
-
+/*
     @Test
     public void fileUploadTest() throws IOException {
 
@@ -56,7 +58,33 @@ public class FSTest {
 
         System.out.println(StringUtils.join(paths, "/"));
 
+    }*/
+
+    @Test
+    public void start() throws NoSuchAlgorithmException {
+        System.out.println(encryptSha256("1234", "admin"));
     }
 
+    public static String encryptSha256(String value, String salt) throws NoSuchAlgorithmException {
+        MessageDigest md;
+        StringBuilder sb = new StringBuilder(org.apache.commons.lang3.StringUtils.EMPTY);
+        String reversedSalt = new StringBuffer(salt).reverse().toString();
+        String preSalt = salt.length() > 3 ? salt.substring(0, 3) : salt;
+        String sufSalt = reversedSalt.length() > 3 ? reversedSalt.substring(0, 3) : reversedSalt;
+        String saltAddedValue = preSalt + value + sufSalt;
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+            md.update(saltAddedValue.getBytes());
+            byte[] byteData = md.digest();
+            for (byte tmpStrByte : byteData) {
+                String tmpEncTxt = Integer.toString((tmpStrByte & 0xff) + 0x100, 16).substring(1);
+                sb.append(tmpEncTxt);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return sb.toString();
+    }
 }
 

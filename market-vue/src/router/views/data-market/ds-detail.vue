@@ -30,13 +30,19 @@
                 dataset : {},
                 urlsInfo :[
                     {id: 1}
-                ]
+                ],
+                curUser : ""
             };
         },
         created() {
-            this.getDetails();
+          if (this.$store.state.curUser) {
+            this.curUser = this.$store.state.curUser;
+          }
+
+          this.getDetails();
         },
         methods: {
+
             getDetails() {
                 axios.get(`/ds/${this.$route.query.setId}`,{
 
@@ -48,7 +54,15 @@
             },
             isLogin() {
                 console.log(this.$store.state);
-                return this.$store.state.curUser === this.dataset.seller.userId;
+                return this.curUser === this.dataset.seller.userId;
+            },
+            deleteDs() {
+                axios.delete(`/ds/${this.$route.query.setId}`).then(res => {
+                    if(res.status === 200) {
+                        alert("삭제 되었습니다.");
+                        this.$router.push({path: '/'})
+                    }
+                })
             }
 
         },
@@ -157,12 +171,15 @@
                                 </h6>
 
                             </table>
-                            <router-link :to="{ name: 'Purchase Dataset', query: { setId: dataset.setId }}" role="menuitem">
+                            <router-link v-if="this.curUser != '' && !isLogin()" :to="{ name: 'Purchase Dataset', query: { setId: dataset.setId }}" role="menuitem">
                                 <b-button pill class="btn btn-success w-100">구매하기</b-button>
                             </router-link>
                             <div class="mt-2 mb-2 button-items" v-if=isLogin()>
-                                <b-button pill class="btn btn-warning col-6 mr-1">수정</b-button>
-                                <b-button pill class="btn btn-danger col-5 ml-1">삭제</b-button>
+                                <router-link :to="{ name: 'Dataset Modify', query: { setId: dataset.setId }}" role="menuitem">
+                                    <b-button pill class="btn btn-warning col-6 mr-1">수정</b-button>
+                                </router-link>
+
+                                <b-button pill class="btn btn-danger col-5 ml-1" @click="deleteDs">삭제</b-button>
                             </div>
                         </div>
                         <!-- end table-responsive -->

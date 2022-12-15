@@ -15,10 +15,10 @@ import java.util.List;
 public interface DatasetRepository extends JpaRepository<Dataset, Integer> {
 
 
-    @Query(value = "SELECT * FROM DM_DATASET_INFOS WHERE (TITLE || CONTENT) LIKE CONCAT('%', :k, '%') ORDER BY CRT_DT DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM DM_DATASET_INFOS WHERE (TITLE || CONTENT) LIKE CONCAT('%', :k, '%') AND PUBLIC_YN = 'Y' ORDER BY CRT_DT DESC", nativeQuery = true)
     Page<Dataset> findAllBy(Pageable page, @Param("k") String keyword);
 
-    @Query(value = "SELECT * FROM DM_DATASET_INFOS WHERE cat_id = :catId AND (TITLE || CONTENT) LIKE CONCAT('%', :k, '%') ORDER BY CRT_DT DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM DM_DATASET_INFOS WHERE cat_id = :catId AND (TITLE || CONTENT) LIKE CONCAT('%', :k, '%') AND PUBLIC_YN = 'Y' ORDER BY CRT_DT DESC", nativeQuery = true)
     Page<Dataset> findAllByCat(Pageable page, @Param("k") String keyword, @Param("catId") int catId);
 
 
@@ -41,4 +41,24 @@ public interface DatasetRepository extends JpaRepository<Dataset, Integer> {
     List<Object> getCountCats();
 
     int countByPublicYn(String publicYn);
+
+
+    //공인인증
+    @Query(value = "SELECT TITLE FROM DM_DATASET_INFOS", nativeQuery = true)
+    List<String> getAllTitle();
+
+    @Query(value = "SELECT CONTENT FROM DM_DATASET_INFOS", nativeQuery = true)
+    List<String> getAllContent();
+
+    @Query(value = "SELECT VIEWS FROM DM_DATASET_INFOS", nativeQuery = true)
+    List<Integer> getAllViews();
+
+    @Query(value = "SELECT DATATYPE FROM DM_DATASET_INFOS", nativeQuery = true)
+    List<String> getAllDataType();
+
+    @Query(value = "SELECT PATH FROM DM_DATASET_INFOS", nativeQuery = true)
+    List<String> getPathList();
+
+    @Query(value = "SELECT PRICE FROM DM_DATASET_INFOS", nativeQuery = true)
+    List<Double> getAllPrice();
 }

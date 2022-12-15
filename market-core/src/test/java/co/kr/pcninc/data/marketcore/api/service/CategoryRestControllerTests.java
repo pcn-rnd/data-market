@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CategoryRestControllerTests extends ControllerTestBase {
-    static final String URL_PREFIX = CategoryRestController.URL_PREFIX;
+/*    static final String URL_PREFIX = CategoryRestController.URL_PREFIX;
 
     @Test
     @Order(1)
@@ -38,7 +38,7 @@ public class CategoryRestControllerTests extends ControllerTestBase {
                         )
                 ))
                 .andExpect(status().isOk());
-    }
+    }*/
 }
 
 

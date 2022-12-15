@@ -46,6 +46,15 @@
                         this.list.number += 1;
                     });
             }
+        },
+        filters : {
+            ellipsis(value) {
+                let limit = 20;
+                if (value.length > limit) {
+                    value = value.substring(0, (limit - 3)) + '...';
+                }
+                return value
+            }
         }
     };
 </script>
@@ -80,7 +89,7 @@
                                                 <label class="custom-control-label" :for="`customCheck-${idx}`"></label>
                                             </div>-->
                                         </h5>
-                                        <p class="text-muted mb-4">{{item.setId.content}}</p>
+                                        <p class="text-muted mb-4">{{item.setId.content | ellipsis}}</p>
                                     </div>
                                 </div>
 
